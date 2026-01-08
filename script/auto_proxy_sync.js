@@ -14,7 +14,7 @@ const { api_key, github_token, repo, file_path } = (function() {
 
 const API_URL = `http://127.0.0.1:6171/v1/requests/recent?x-key=${api_key}`;
 const GITHUB_API = `https://api.github.com/repos/${repo}/contents/${file_path}`;
-const AUTH_HEADER = `Bearer ${github_token}`;
+const AUTH_HEADER = `${github_token}`;
 
 // --- 内置 Base64 工具 ---
 const Base64 = {
