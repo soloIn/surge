@@ -8,4 +8,4 @@ http-api = solo@127.0.0.1:6171
 
 [Script]
 # Cron 表达式由参数控制，默认每 15 分钟运行一次
-auto_proxy_sync = type=cron,cronexp="*/1 * * * *",script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/auto_proxy_sync.js
+auto_proxy_sync = type=cron,cronexp="*/1 * * * *",script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/auto_proxy_sync.js,argument="api_key={{{apiKey}}},github_token={{{githubToken}}},repo={{{repo}}},file_path={{{filePath}}}"
