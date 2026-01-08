@@ -3,15 +3,10 @@
  * 不依赖任何外部工具函数，内置 Base64 编解码
  */
 
-const { api_key, github_token, repo, file_path } = (function() {
-    const args = $argument.split(',').reduce((acc, cur) => {
-        const pair = cur.split('=');
-        if (pair.length === 2) acc[pair[0].trim()] = pair[1].trim();
-        return acc;
-    }, {});
-    return args;
-})();
-
+const api_key = "{{{apiKey}}}";
+const github_token = "{{{githubToken}}}";
+const repo = "{{{repo}}}";
+const file_path = "{{{filePath}}}";
 const API_URL = `http://127.0.0.1:6171/v1/requests/recent?x-key=${api_key}`;
 const GITHUB_API = `https://api.github.com/repos/${repo}/contents/${file_path}`;
 const AUTH_HEADER = `Bearer ${github_token}`;
