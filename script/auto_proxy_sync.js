@@ -1,5 +1,6 @@
 /**
- * Surge 自动收集失败请求脚本 (优化版)
+ * Surge 自动收集失败请求脚本 (完全兼容版)
+ * 不依赖任何外部工具函数，内置 Base64 编解码
  */
 
 const { api_key, github_token, repo, file_path } = (function() {
@@ -13,12 +14,62 @@ const { api_key, github_token, repo, file_path } = (function() {
 
 const API_URL = `http://127.0.0.1:6171/v1/requests/recent?x-key=${api_key}`;
 const GITHUB_API = `https://api.github.com/repos/${repo}/contents/${file_path}`;
+const AUTH_HEADER = `Bearer ${github_token}`;
+
+// --- 内置 Base64 工具 ---
+const Base64 = {
+    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+    encode: function(e) {
+        let t = "", n, r, i, s, o, u, a, f = 0;
+        e = this._utf8_encode(e);
+        while (f < e.length) {
+            n = e.charCodeAt(f++); r = e.charCodeAt(f++); i = e.charCodeAt(f++);
+            s = n >> 2; o = (n & 3) << 4 | r >> 4; u = (r & 15) << 2 | i >> 6; a = i & 63;
+            if (isNaN(r)) u = a = 64; else if (isNaN(i)) a = 64;
+            t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o) + this._keyStr.charAt(u) + this._keyStr.charAt(a)
+        }
+        return t
+    },
+    decode: function(e) {
+        let t = "", n, r, i, s, o, u, a, f = 0;
+        e = e.replace(/[^A-Za-z0-9+/=]/g, "");
+        while (f < e.length) {
+            s = this._keyStr.indexOf(e.charAt(f++)); o = this._keyStr.indexOf(e.charAt(f++));
+            u = this._keyStr.indexOf(e.charAt(f++)); a = this._keyStr.indexOf(e.charAt(f++));
+            n = s << 2 | o >> 4; r = (o & 15) << 4 | u >> 2; i = (u & 3) << 6 | a;
+            t = t + String.fromCharCode(n);
+            if (u != 64) t = t + String.fromCharCode(r);
+            if (a != 64) t = t + String.fromCharCode(i)
+        }
+        return this._utf8_decode(t)
+    },
+    _utf8_encode: function(e) {
+        e = e.replace(/\r\n/g, "\n"); let t = "";
+        for (let n = 0; n < e.length; n++) {
+            let r = e.charCodeAt(n);
+            if (r < 128) t += String.fromCharCode(r);
+            else if (r > 127 && r < 2048) { t += String.fromCharCode(r >> 6 | 192); t += String.fromCharCode(r & 63 | 128) }
+            else { t += String.fromCharCode(r >> 12 | 224); t += String.fromCharCode(r >> 6 & 63 | 128); t += String.fromCharCode(r & 63 | 128) }
+        }
+        return t
+    },
+    _utf8_decode: function(e) {
+        let t = "", n = 0, r = c1 = c2 = 0;
+        while (n < e.length) {
+            r = e.charCodeAt(n);
+            if (r < 128) { t += String.fromCharCode(r); n++ }
+            else if (r > 191 && r < 224) { c2 = e.charCodeAt(n + 1); t += String.fromCharCode((r & 31) << 6 | c2 & 63); n += 2 }
+            else { c2 = e.charCodeAt(n + 1); c3 = e.charCodeAt(n + 2); t += String.fromCharCode((r & 15) << 12 | (c2 & 63) << 6 | c3 & 63); n += 3 }
+        }
+        return t
+    }
+};
 
 async function main() {
     try {
         const recentRequests = await fetchRecentFailed();
         if (recentRequests.length === 0) {
-            console.log("没有符合条件的失败请求");
+            console.log("未发现符合条件的失败请求");
             $done(); return;
         }
 
@@ -26,13 +77,12 @@ async function main() {
         const { sha, originalList } = fileInfo;
         
         const newDomains = recentRequests.filter(d => !originalList.includes(d));
-        
         if (newDomains.length === 0) {
-            console.log("域名已存在，无需更新");
+            console.log("域名已存在，跳过更新");
             $done(); return;
         }
 
-        const updatedList = [...originalList, ...newDomains].sort();
+        const updatedList = [...new Set([...originalList, ...newDomains])].sort();
         const updatedContent = updatedList.join('\n');
         await updateGitHubFile(updatedContent, sha, newDomains);
 
@@ -51,7 +101,7 @@ function fetchRecentFailed() {
                 const failed = json.requests
                     .filter(r => r.failed === true && r.rule && r.rule.includes("FINAL"))
                     .map(r => r.remoteHost ? r.remoteHost.split(':')[0] : "")
-                    .filter(h => h && h.includes(".") && !/^\d+\.\d+\.\d+\.\d+$/.test(h)); // 排除纯IP
+                    .filter(h => h && h.includes(".") && !/^\d+\.\d+\.\d+\.\d+$/.test(h));
                 resolve([...new Set(failed)]);
             } catch (e) { resolve([]); }
         });
@@ -63,24 +113,27 @@ function getGitHubFile() {
         $httpClient.get({
             url: GITHUB_API,
             headers: { 
-                "Authorization": `${github_token}`,
+                "Authorization": AUTH_HEADER,
                 "User-Agent": "Surge-Script",
                 "Accept": "application/vnd.github.v3+json"
             }
         }, (err, resp, data) => {
             if (err || resp.status !== 200) {
-                console.log("无法获取 GitHub 文件，可能文件不存在，将尝试新建");
+                console.log(`GitHub 获取失败: ${resp ? resp.status : err}`);
                 return resolve({ sha: null, originalList: [] });
             }
-            const json = JSON.parse(data);
-            if (json.content) {
-                // 使用 Surge 内置的 $util.base64Decode 确保兼容性
-                const decoded = $utils.base64Decode(json.content.replace(/\s/g, ''));
-                // 解决 UTF-8 编码问题
-                const content = $utils.decodeURIComponent(escape(decoded));
-                const list = content.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
-                resolve({ sha: json.sha, originalList: list });
-            } else {
+            try {
+                const json = JSON.parse(data);
+                if (json.content) {
+                    const cleanedContent = json.content.replace(/\s/g, '');
+                    const decoded = Base64.decode(cleanedContent);
+                    const list = decoded.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
+                    resolve({ sha: json.sha, originalList: list });
+                } else {
+                    resolve({ sha: null, originalList: [] });
+                }
+            } catch (e) {
+                console.log("解析 GitHub JSON 失败");
                 resolve({ sha: null, originalList: [] });
             }
         });
@@ -89,26 +142,25 @@ function getGitHubFile() {
 
 function updateGitHubFile(content, sha, news) {
     return new Promise((resolve) => {
-        let body = {
+        const body = {
             message: `🤖 Auto-add: ${news.join(', ')}`,
-            // 使用 Surge 内 testamentary 的 $util.base64Encode
-            content: $utils.base64Encode(content)
+            content: Base64.encode(content),
+            sha: sha
         };
-        if (sha) body.sha = sha;
 
         $httpClient.put({
             url: GITHUB_API,
             headers: { 
-                "Authorization": `${github_token}`,
+                "Authorization": AUTH_HEADER,
                 "User-Agent": "Surge-Script",
                 "Accept": "application/vnd.github.v3+json"
             },
             body: JSON.stringify(body)
         }, (err, resp, data) => {
             if (!err && (resp.status === 200 || resp.status === 201)) {
-                $notification.post("Surge 自动分流更新", `成功添加 ${news.length} 个域名`, news.join('\n'));
+                $notification.post("Surge 自动分流更新", `成功添加 ${news.length} 个域名`, news.join(', '));
             } else {
-                console.log("上传失败: " + data);
+                console.log("更新失败: " + data);
             }
             resolve();
             $done();
