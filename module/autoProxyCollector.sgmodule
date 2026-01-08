@@ -1,0 +1,11 @@
+#!name=Auto Proxy Collector
+#!desc=定时扫描直连失败请求并同步至 GitHub Domain-Set。
+#!category=Automation
+#!arguments=apiKey:apiKey
+[General]
+# 确保开启了 HTTP API 控制
+http-api = solo@127.0.0.1:6171
+
+[Script]
+# Cron 表达式由参数控制，默认每 15 分钟运行一次
+auto_proxy_sync = type=cron,cronexp="*/1 * * * *",script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/auto_proxy_sync.js,argument="api_key=solo,github_token=%apiKey%,repo=soloIn/surge,file_path=rule/auto-proxy.list"
