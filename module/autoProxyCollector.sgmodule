@@ -1,7 +1,7 @@
 #!name=Auto Proxy Collector
 #!desc=定时扫描直连失败请求并同步至 GitHub Domain-Set。
 #!category=Automation
-#!arguments=apiKey:solo,githubToken:github_pat_xxxx,repo:soloIn/surge,filePath:rule/auto-proxy.list,corn: */5 * * * *
+#!arguments=apiKey:solo,githubToken:github_pat_xxxx,repo:soloIn/surge,filePath:rule/auto-proxy.list,corn:0 */5 8-19 * * *
 [General]
 # 确保开启了 HTTP API 控制
 http-api = solo@127.0.0.1:6171
