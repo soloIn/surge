@@ -63,7 +63,7 @@ function getGitHubFile() {
         $httpClient.get({
             url: GITHUB_API,
             headers: { 
-                "Authorization": `token ${github_token}`,
+                "Authorization": `${github_token}`,
                 "User-Agent": "Surge-Script",
                 "Accept": "application/vnd.github.v3+json"
             }
@@ -99,7 +99,7 @@ function updateGitHubFile(content, sha, news) {
         $httpClient.put({
             url: GITHUB_API,
             headers: { 
-                "Authorization": `token ${github_token}`,
+                "Authorization": `${github_token}`,
                 "User-Agent": "Surge-Script",
                 "Accept": "application/vnd.github.v3+json"
             },
