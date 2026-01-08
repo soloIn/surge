@@ -69,7 +69,8 @@ async function main() {
     try {
         const recentRequests = await fetchRecentFailed();
         if (recentRequests.length === 0) {
-            console.log("未发现符合条件的失败请求:",AUTH_HEADER);
+            console.log("未发现符合条件的失败请求:");
+            console.log(AUTH_HEADER)
             $done(); return;
         }
 
