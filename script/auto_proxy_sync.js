@@ -3,10 +3,31 @@
  * 不依赖任何外部工具函数，内置 Base64 编解码
  */
 
-const api_key = "{{{apiKey}}}";
-const github_token = "{{{githubToken}}}";
-const repo = "{{{repo}}}";
-const file_path = "{{{filePath}}}";
+const config = (function() {
+    let obj = {};
+    if (typeof $argument !== 'undefined' && $argument) {
+        // 使用正则匹配 key=value，兼容 value 中包含等号的情况
+        let pairs = $argument.split(/,(?=[a-zA-Z_0-9]+=)/);
+        pairs.forEach(pair => {
+            let idx = pair.indexOf('=');
+            if (idx !== -1) {
+                let k = pair.substring(0, idx).trim();
+                let v = pair.substring(idx + 1).trim();
+                obj[k] = v;
+            }
+        });
+    }
+    return obj;
+})();
+
+const api_key = config.api_key || "solo";
+const github_token = config.github_token;
+const repo = config.repo;
+const file_path = config.file_path;
+
+// 调试输出：请在控制台确认打印出的长度是否正确（不要打印明文，安全第一）
+console.log(`[参数检查] Token 长度: ${github_token ? github_token.length : 0}`);
+console.log(`[参数检查] Repo: ${repo}`);
 const API_URL = `http://127.0.0.1:6171/v1/requests/recent?x-key=${api_key}`;
 const GITHUB_API = `https://api.github.com/repos/${repo}/contents/${file_path}`;
 const AUTH_HEADER = `Bearer ${github_token}`;
