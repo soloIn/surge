@@ -75,9 +75,9 @@ function getGitHubFile() {
             const json = JSON.parse(data);
             if (json.content) {
                 // 使用 Surge 内置的 $util.base64Decode 确保兼容性
-                const decoded = $util.base64Decode(json.content.replace(/\s/g, ''));
+                const decoded = $utils.base64Decode(json.content.replace(/\s/g, ''));
                 // 解决 UTF-8 编码问题
-                const content = $util.decodeURIComponent(escape(decoded));
+                const content = $utils.decodeURIComponent(escape(decoded));
                 const list = content.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#'));
                 resolve({ sha: json.sha, originalList: list });
             } else {
@@ -92,7 +92,7 @@ function updateGitHubFile(content, sha, news) {
         let body = {
             message: `🤖 Auto-add: ${news.join(', ')}`,
             // 使用 Surge 内 testamentary 的 $util.base64Encode
-            content: $util.base64Encode(content)
+            content: $utils.base64Encode(content)
         };
         if (sha) body.sha = sha;
 
