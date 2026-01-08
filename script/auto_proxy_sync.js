@@ -116,7 +116,14 @@ function fetchRecentFailed() {
                 const json = JSON.parse(data);
                 const failed = json.requests
                     .filter(r => r.failed === true && r.rule && r.rule.includes("FINAL"))
-                    .map(r => r.remoteHost ? r.remoteHost.split(':')[0] : "")
+                    .map(r => {
+                        let host = r.remoteHost ? r.remoteHost.split(':')[0] : "";
+                        // 修正：在域名前面加上 "." 以实现后缀匹配
+                        if (host && !host.startsWith('.')) {
+                            host = '.' + host;
+                        }
+                        return host;
+                    })
                     .filter(h => h && h.includes(".") && !/^\d+\.\d+\.\d+\.\d+$/.test(h));
                 resolve([...new Set(failed)]);
             } catch (e) { resolve([]); }
