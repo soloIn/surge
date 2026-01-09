@@ -21,6 +21,6 @@ aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 *translate-solo.ddns-ip.net = server:h3://dns.alidns.com/dns-query
 *workers.dev = server:https://dns.cloudflare.com/dns-query
 # 腾讯
-RULE-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Tencent/Tencent_All.list = server:https://doh.pub/dns-query
+DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Tencent/Tencent_Domain.list = server:https://doh.pub/dns-query
 # 阿里
 RULE-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Alibaba/Alibaba_All.list = server:h3://dns.alidns.com/dns-query
