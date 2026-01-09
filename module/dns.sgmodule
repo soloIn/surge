@@ -23,4 +23,4 @@ aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 # 腾讯
 DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Tencent/Tencent_Domain.list = server:https://doh.pub/dns-query
 # 阿里
-DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Alibaba/Alibaba_Domain.list = server:h3://dns.alidns.com/dns-query
+DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Alibaba/Alibaba_Domain.list = server:https://dns.alidns.com/dns-query
