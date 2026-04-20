@@ -59,8 +59,7 @@ async function optimizePurity() {
         // 第二步：清洗并提取待测试的节点名称数组
         // 过滤掉内置直连策略，防止将本机 IP 传给 API 检测
         const rawNodes = groupData;
-        const validNodes = rawNodes.map(item => typeof item === 'object'? item.name : item)
-                                  .filter(name =>!.includes(name));
+        const validNodes = rawNodes.map(item => typeof item === 'object'? item.name : item).filter(name =>!.includes(name));
 
         if (validNodes.length === 0) {
             throw new Error(`策略组 ${TARGET_GROUP} 中无可用外部代理节点。`);
