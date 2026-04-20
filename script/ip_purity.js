@@ -68,7 +68,6 @@ function probeViaPolicy(url, policyName, extraHeaders = {}) {
             timeout: 8 // 单个节点的请求超时设为 8 秒，避免长时间卡死
         }, (error, response, data) => {
             const rtt = Date.now() - startTime;
-            console.log("res:" + response)
             if (error || !(response && response.status === 200)) {
                 resolve({ success: false, policy: policyName, error: error });
             } else {
@@ -130,6 +129,7 @@ async function optimizePurity() {
             if (riskRes && riskRes.success) {
                 try {
                     const parsedData = typeof riskRes.data === 'string' ? JSON.parse(riskRes.data) : riskRes.data;
+                    console.log("res: " + parsedData)
                     node.risk_score = parseInt(parsedData.risk_score || parsedData.score || 0, 10) || 0;
                     node.country = parsedData.country_code || parsedData.country || "未知";
                     node.isp = parsedData.isp || "未知 ISP";
