@@ -113,7 +113,7 @@ async function optimizePurity() {
         const ping0Headers = {
             "x-rapidapi-key": RAPIDAPI_KEY,
             "x-rapidapi-host": "ping0-api.p.rapidapi.com",
-            "Content-Type: application/json"
+            "Content-Type": "application/json"
         };
 
         const riskPromises = validNodes.map(node =>
