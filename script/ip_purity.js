@@ -10,12 +10,13 @@ const defaultArgs = {
 // 2. 核心解析与合并逻辑 (模仿你发我的 initArgument 逻辑)
 function parseArguments(defaults) {
     // 先克隆一份默认配置
+    console.log("$argument: " + $argument)
     let args = Object.assign({}, defaults); 
     
     // 如果存在 Surge 传入的字符串形式的 $argument
     if (typeof $argument === 'string' && $argument.trim() !== '') {
         try {
-            console.log("$argument: " + $argument)
+            
             // 将模块传入的 JSON 字符串反序列化，并覆盖到 args 对象上
             Object.assign(args, JSON.parse($argument));
         } catch (e) {
