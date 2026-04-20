@@ -76,9 +76,7 @@ async function optimizePurity() {
             if (res.success && res.data) {
                 const cleanIP = res.data.trim();
                 // 简单的正则过滤，防止返回的是非 IP 内容（如认证页面的 HTML）
-                if (/^[\d\.]+$/.test(cleanIP) |
-
-| /^[\da-fA-F:]+$/.test(cleanIP)) {
+                if (/^[\d\.]+$/.test(cleanIP) || /^[\da-fA-F:]+$/.test(cleanIP)) {
                     activeNodes.push({ name: res.policy, ip: cleanIP, latency: res.latency });
                 }
             }
@@ -112,17 +110,10 @@ async function optimizePurity() {
                     const parsedData = JSON.parse(riskRes.data);
                     // 核心评分逻辑
                     node.risk_score = parseInt(parsedData.risk_score, 10);
-                    node.country = parsedData.country_code |
-
-| "未知";
-                    node.isp = parsedData.isp |
-
-| "未知 ISP";
+                    node.country = parsedData.country_code || "未知";
+                    node.isp = parsedData.isp || "未知 ISP";
                     // 标记是否为 VPN/Proxy 强相关
-                    node.is_vpn = parsedData.vpn |
-
-| parsedData.proxy |
-| parsedData.tor;
+                    node.is_vpn = parsedData.vpn || parsedData.proxy || parsedData.tor;
                     
                     evaluatedNodes.push(node);
                 } catch (e) {
@@ -208,9 +199,7 @@ function terminateUI(title, content, style) {
 // 辅助方法：安全解析 $argument 键值对字符串
 function parseArgs(argString) {
     let result = {};
-    if (!argString |
-
-| typeof argString!== "string") return result;
+    if (!argString || typeof argString!== "string") return result;
     
     const parts = argString.split('&');
     for (const part of parts) {
