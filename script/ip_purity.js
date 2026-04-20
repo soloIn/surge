@@ -68,6 +68,7 @@ function probeViaPolicy(url, policyName, extraHeaders = {}) {
             timeout: 8 // 单个节点的请求超时设为 8 秒，避免长时间卡死
         }, (error, response, data) => {
             const rtt = Date.now() - startTime;
+            console.log("response:" + JSON.parse(response))
             if (error || !(response && response.status === 200)) {
                 resolve({ success: false, policy: policyName, error: error });
             } else {
