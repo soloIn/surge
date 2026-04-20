@@ -2,11 +2,38 @@
  * 针对 Surge 策略组出口 IP 纯净度检测与动态覆盖脚本
  * 环境：Surge iOS 4.9.3+ / Surge Mac 4.0.0+
  */
+const defaultArgs = {
+    group: "Proxy", // 默认策略组
+    apikey: ""      // 默认 API Key
+};
 
-// --- 参数解析与配置校验 ---
-const ARGS = parseArgs($argument);
-const TARGET_GROUP = ARGS['group'];
-const RAPIDAPI_KEY = ARGS['apikey'];
+// 2. 核心解析与合并逻辑 (模仿你发我的 initArgument 逻辑)
+function parseArguments(defaults) {
+    // 先克隆一份默认配置
+    let args = Object.assign({}, defaults); 
+    
+    // 如果存在 Surge 传入的字符串形式的 $argument
+    if (typeof $argument === 'string' && $argument.trim() !== '') {
+        try {
+            // 将模块传入的 JSON 字符串反序列化，并覆盖到 args 对象上
+            Object.assign(args, JSON.parse($argument));
+        } catch (e) {
+            console.log("❌ $argument JSON 解析失败，将使用默认配置。错误：" + e.message);
+        }
+    } 
+    // 顺手做个 Loon 兼容 (Loon 的 $argument 已经是 Object 了)
+    else if (typeof $argument === 'object' && $argument !== null) {
+        Object.assign(args, $argument);
+    }
+    
+    return args;
+}
+
+// 3. 获取最终生效的参数
+const ARGS = parseArguments(defaultArgs);
+const TARGET_GROUP = ARGS.group;
+const RAPIDAPI_KEY = ARGS.apikey;
+console.log(`当前使用的策略组: ${TARGET_GROUP}`);
 
 if (!TARGET_GROUP || !RAPIDAPI_KEY) {
     terminateUI("配置错误", "请在模块配置中正确填写 TARGET_GROUP 与 PING0_API_KEY。", "error");
