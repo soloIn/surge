@@ -1,7 +1,7 @@
 #!name=节点纯净度智能优化器 (IP Purity Optimizer)
 #!desc=自动并发检测指定策略组内所有节点的真实出口 IP 与信誉风险得分 (基于 ping0.cc API)。系统将自动找出风险最低且延迟最好的节点，并强制将其覆盖为当前策略组的激活节点。
 #!category=Traffic Automation
-#!arguments=TARGET_GROUP=group&PING0_API_KEY=api
+#!arguments=TARGET_GROUP:PROXY,PING0_API_KEY:api
 
 [Panel]
 # 定义 Information Panel
