@@ -15,6 +15,7 @@ function parseArguments(defaults) {
     // 如果存在 Surge 传入的字符串形式的 $argument
     if (typeof $argument === 'string' && $argument.trim() !== '') {
         try {
+            console.log($argument)
             // 将模块传入的 JSON 字符串反序列化，并覆盖到 args 对象上
             Object.assign(args, JSON.parse($argument));
         } catch (e) {
