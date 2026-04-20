@@ -59,11 +59,13 @@ function invokeSurgeAPI(method, path, body = null) {
 
 // 封装带有底层 policy 强制路由的外部 HTTP 客户端
 function probeViaPolicy(url, policyName, extraHeaders = {}) {
-    console.log(`测试节点：${policyName}`);
+    const policy = String(nodeName).trim();
+    console.log(`测试节点：${policy}`); // 要求的调试日志
     return new Promise((resolve) => {
         const startTime = Date.now();
         $httpClient.get({
             url: url,
+            policy: policy,
             headers: extraHeaders,
             timeout: 8 // 单个节点的请求超时设为 8 秒，避免长时间卡死
         }, (error, response, data) => {
