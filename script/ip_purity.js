@@ -59,6 +59,7 @@ function invokeSurgeAPI(method, path, body = null) {
 
 // 封装带有底层 policy 强制路由的外部 HTTP 客户端
 function probeViaPolicy(url, policyName, extraHeaders = {}) {
+    console.log(`测试节点：${policyName}`);
     return new Promise((resolve) => {
         const startTime = Date.now();
         $httpClient.get({
@@ -109,22 +110,22 @@ async function optimizePurity() {
         }
 
         // 第三步：高并发探测所有节点的真实物理出口 IP
-        const ipProbePromises = validNodes.map(node => probeViaPolicy("https://api.ipify.org?format=text", node));
-        const ipResults = await Promise.all(ipProbePromises);
+        // const ipProbePromises = validNodes.map(node => probeViaPolicy("https://api.ipify.org?format=text", node));
+        // const ipResults = await Promise.all(ipProbePromises);
 
-        let activeNodes = [];
-        for (let res of ipResults) {
-            if (res && res.success && res.data) {
-                const cleanIP = String(res.data).trim();
-                if (/^[\d.]+$/.test(cleanIP) || /^[\da-fA-F:]+$/.test(cleanIP)) {
-                    activeNodes.push({ name: res.policy, ip: cleanIP, latency: res.latency });
-                }
-            }
-        }
+        // let activeNodes = [];
+        // for (let res of ipResults) {
+        //     if (res && res.success && res.data) {
+        //         const cleanIP = String(res.data).trim();
+        //         if (/^[\d.]+$/.test(cleanIP) || /^[\da-fA-F:]+$/.test(cleanIP)) {
+        //             activeNodes.push({ name: res.policy, ip: cleanIP, latency: res.latency });
+        //         }
+        //     }
+        // }
 
-        if (activeNodes.length === 0) {
-            throw new Error("所有节点均无法连接到外网，无法获取出口 IP。");
-        }
+        // if (activeNodes.length === 0) {
+        //     throw new Error("所有节点均无法连接到外网，无法获取出口 IP。");
+        // }
 
         // 第四步：基于获取到的出口 IP，并发请求 ping0.cc 的风险评分接口
         const ping0Headers = {
@@ -134,7 +135,7 @@ async function optimizePurity() {
         };
 
         const riskPromises = activeNodes.map(node =>
-            probeViaPolicy(`https://ping0.xyz/rapidapi/lookup/?ip=${encodeURIComponent(node.ip)}`, "DIRECT", ping0Headers)
+            probeViaPolicy(`https://ping0-api.p.rapidapi.com/rapidapi/lookup?ip=${encodeURIComponent(node.ip)}`, "node", ping0Headers)
         );
 
         const riskResults = await Promise.all(riskPromises);
