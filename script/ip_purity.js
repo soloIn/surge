@@ -65,7 +65,7 @@ function probeViaPolicy(url, policyName, extraHeaders = {}) {
         $httpClient.get({
             url: url,
             headers: extraHeaders,
-            policy: direct,
+            policy: "direct",
             timeout: 8 // 单个节点的请求超时设为 8 秒，避免长时间卡死
         }, (error, response, data) => {
             const rtt = Date.now() - startTime;
