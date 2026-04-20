@@ -59,7 +59,7 @@ function invokeSurgeAPI(method, path, body = null) {
 
 // 封装带有底层 policy 强制路由的外部 HTTP 客户端
 function probeViaPolicy(url, policyName, extraHeaders = {}) {
-    const policy = String(nodeName).trim();
+    const policy = String(policyName).trim();
     console.log(`测试节点：${policy}`); // 要求的调试日志
     return new Promise((resolve) => {
         const startTime = Date.now();
