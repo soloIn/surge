@@ -1,17 +1,16 @@
-#!name=IP纯净度检测（融合版）
-#!desc=自动检测节点纯净度（ASN + IP类型），评分排序并自动切换最优节点
-#!author=ChatGPT
-#!version=1.0
-
-[Proxy Group]
-Auto-IP = select, 节点A, 节点B, 节点C
-
-[Rule]
-DOMAIN-SUFFIX,ipinfo.io,Auto-IP
-FINAL,DIRECT
-
-[Script]
-IP-Purity-Cron = type=cron,cronexp=*/10 * * * *,script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/ip_purity.js
+#!name=节点纯净度智能优化器 (IP Purity Optimizer)
+#!desc=自动并发检测指定策略组内所有节点的真实出口 IP 与信誉风险得分 (基于 ping0.cc API)。系统将自动找出风险最低且延迟最好的节点，并强制将其覆盖为当前策略组的激活节点。
+#!category=Traffic Automation
+#!arguments=TARGET_GROUP:Proxy,PING0_API_KEY:在此填写您的RapidAPI_Key
+#!arguments-desc=TARGET_GROUP: 需要被检测与切换的目标策略组（必须为 select 组）。\nPING0_API_KEY: 您在 RapidAPI 上订阅 ping0.cc 服务所获得的 X-RapidAPI-Key。
+#!system=mac,ios
 
 [Panel]
-IP纯净度 = script-name=IP-Purity-Panel,update-interval=600
+# 定义 Information Panel
+# update-interval=3600 表示在用户停留在策略选择视图时，每小时自动在后台跑一次；同时支持点击面板随时刷新
+IP_Purity_Panel = title="IP 纯净度检测中...", content="等待首次脚本执行唤醒...", style=info, script-name=ip_purity_evaluation, update-interval=3600
+
+
+# 定义 Generic 类型脚本
+# timeout=45 旨在为多节点的高并发 HTTP 请求提供充足的网络等待窗口
+ip_purity_evaluation = type=generic, timeout=45, script-path=ip_purity_script.js, argument=group=%TARGET_GROUP%&apikey=%PING0_API_KEY%
