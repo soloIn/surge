@@ -9,7 +9,7 @@
 # update-interval=3600 表示在用户停留在策略选择视图时，每小时自动在后台跑一次；同时支持点击面板随时刷新
 IP_Purity_Panel = title="IP 纯净度检测中...", content="等待首次脚本执行唤醒...", style=info, script-name=ip_purity_evaluation, update-interval=3600
 
-
+[Script]
 # 定义 Generic 类型脚本
 # timeout=45 旨在为多节点的高并发 HTTP 请求提供充足的网络等待窗口
 ip_purity_evaluation = type=generic, timeout=45, script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/ip_purity.js, argument=group=%TARGET_GROUP%&apikey=%PING0_API_KEY%
