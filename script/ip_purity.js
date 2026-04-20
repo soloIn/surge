@@ -134,16 +134,16 @@ async function optimizePurity() {
             "Accept": "application/json"
         };
 
-        const riskPromises = activeNodes.map(node =>
+        const riskPromises = validNodes.map(node =>
             probeViaPolicy(`https://ping0-api.p.rapidapi.com/rapidapi/lookup?ip=${encodeURIComponent(node.ip)}`, "node", ping0Headers)
         );
 
         const riskResults = await Promise.all(riskPromises);
         let evaluatedNodes = [];
 
-        for (let i = 0; i < activeNodes.length; i++) {
+        for (let i = 0; i < validNodes.length; i++) {
             const riskRes = riskResults[i];
-            const node = activeNodes[i];
+            const node = validNodes[i];
 
             if (riskRes && riskRes.success) {
                 try {
