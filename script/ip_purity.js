@@ -111,9 +111,9 @@ async function optimizePurity() {
 
         // 第四步：基于获取到的出口 IP，并发请求 ping0.cc 的风险评分接口
         const ping0Headers = {
-            "X-RapidAPI-Key": RAPIDAPI_KEY,
-            "X-RapidAPI-Host": "ping0.xyz",
-            "Accept": "application/json"
+            "x-rapidapi-key": RAPIDAPI_KEY,
+            "x-rapidapi-host": "ping0-api.p.rapidapi.com",
+            "Content-Type: application/json"
         };
 
         const riskPromises = validNodes.map(node =>
