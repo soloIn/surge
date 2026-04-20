@@ -1,0 +1,17 @@
+#!name=IP纯净度检测（融合版）
+#!desc=自动检测节点纯净度（ASN + IP类型），评分排序并自动切换最优节点
+#!author=ChatGPT
+#!version=1.0
+
+[Proxy Group]
+Auto-IP = select, 节点A, 节点B, 节点C
+
+[Rule]
+DOMAIN-SUFFIX,ipinfo.io,Auto-IP
+FINAL,DIRECT
+
+[Script]
+IP-Purity-Cron = type=cron,cronexp=*/10 * * * *,script-path=https://raw.githubusercontent.com/soloIn/surge/refs/heads/main/script/ip_purity.js
+
+[Panel]
+IP纯净度 = script-name=IP-Purity-Panel,update-interval=600
