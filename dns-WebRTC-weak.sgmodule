@@ -1,0 +1,28 @@
+#!name=dns-WebRTC-weak
+#!desc=防止dns、WebRTC泄漏
+#!category=solo
+#!arguments=TARGET_GROUP:代理
+[Rule]
+# ══════ WebRTC STUN 防泄漏 ══════
+PROTOCOL,STUN,REJECT-DROP
+DOMAIN-SUFFIX,stun.l.google.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun1.l.google.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun2.l.google.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun3.l.google.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun4.l.google.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun.services.mozilla.com,REJECT-NO-DROP
+DOMAIN-SUFFIX,stun.stunprotocol.org,REJECT-NO-DROP
+
+# DNS Leak
+DOMAIN-SUFFIX,dnsleaktest.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,dnsleak.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,expressvpn.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,nordvpn.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,surfshark.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,ipleak.net,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,perfect-privacy.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,browserleaks.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,browserleaks.org,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,vpnunlimited.com,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,whoer.net,{{{TARGET_GROUP}}}
+DOMAIN-SUFFIX,whrq.net,{{{TARGET_GROUP}}}
