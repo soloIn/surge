@@ -25,3 +25,6 @@ aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Tencent/Tencent_Domain.list = server:119.29.29.29
 # 阿里
 DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Alibaba/Alibaba_Domain.list = server:223.5.5.5
+[Rule]
+DOMAIN-KEYWORD,local,DIRECT,extended-matching
+DOMAIN-KEYWORD,lan,DIRECT,extended-matching
