@@ -1,5 +1,6 @@
 #!name= dns分流
 #!desc= hosts 域名进行分流
+#!category=solo
 [Host]
 # system
 ip6-localhost = ::1
