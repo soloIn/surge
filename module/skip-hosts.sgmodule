@@ -2,6 +2,6 @@
 #!desc= hosts 域名跳过
 #!category=solo
 [General]
-always-real-ip = *.local, *.lan, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, msftconnecttest.com, msftncsi.com, *.msftconnecttest.com, *.msftncsi.com, *.battlenet.com.cn, *.battlenet.com, *.blzstatic.cn, *.battle.net, *.apple.com, *.apple.com.cn, *.icloud.com, *.icloud.com.cn, *.mzstatic.com
+always-real-ip = *.local, *.lan, *.srv.nintendo.net, *.stun.playstation.net, xbox.*.microsoft.com, *.xboxlive.com, msftconnecttest.com, msftncsi.com, *.msftconnecttest.com, *.msftncsi.com, *.battlenet.com.cn, *.battlenet.com, *.blzstatic.cn, *.battle.net
 skip-proxy = 127.0.0.1, localhost, *.local,10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 100.64.0.0/10, 169.254.0.0/16, 198.18.0.0/15, 17.0.0.0/8, 224.0.0.0/4, 255.255.255.255, ::1, ::/128, ::ffff:0:0/96, fe80::/10, fc00::/7, fd00::/8, ff00::/8, passenger.t3go.cn
-tun-excluded-routes = 192.168.0.0/16, 17.0.0.0/8, 172.16.0.0/12, 127.0.0.0/8, 2403:300::/32, 2620:149::/32, 2a01:b740::/32, 255.255.255.255/32, fe80::/10, fc00::/7, ff00::/8
+tun-excluded-routes = 192.168.0.0/16, 10.0.0.0/8, 17.0.0.0/8, 172.16.0.0/12, 127.0.0.0/8, 2403:300::/32, 2620:149::/32, 2a01:b740::/32, 255.255.255.255/32, fe80::/10, fc00::/7, ff00::/8
