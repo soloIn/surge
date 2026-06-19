@@ -13,7 +13,6 @@ amplifi.lan = server:syslib
 *.lan = server:syslib
 # 国外
 aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
-*cloudflare.com = youxuan.cf.090227.xyz
 *iosapps.itunes.apple.com = iosapps.itunes.apple.com.m.alikunlun.net
 *osxapps.itunes.apple.com = osxapps.itunes.apple.com.w.alikunlun.com
 *updates.cdn-apple.com = updates.cdn-apple.com.w.kunlunca.com
