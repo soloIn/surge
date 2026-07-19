@@ -21,6 +21,7 @@ aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 *.run.claw.cloud = server:h3://dns.alidns.com/dns-query
 *translate-solo.ddns-ip.net = server:h3://dns.alidns.com/dns-query
 *workers.dev = server:https://dns.cloudflare.com/dns-query
+*cloudflare.com = server:youxuan.cf.090227.xyz
 # 腾讯
 DOMAIN-SET:https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Tencent/Tencent_Domain.list = server:119.29.29.29
 # 阿里
