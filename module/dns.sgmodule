@@ -17,8 +17,8 @@ aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 *iosapps.itunes.apple.com = iosapps.itunes.apple.com.m.alikunlun.net
 *osxapps.itunes.apple.com = osxapps.itunes.apple.com.w.alikunlun.com
 *updates.cdn-apple.com = updates.cdn-apple.com.w.kunlunca.com
-*apple.com = server:h3://dns.alidns.com/dns-query
-*apple.com.cn = server:h3://dns.alidns.com/dns-query
+#*apple.com = server:h3://dns.alidns.com/dns-query
+#*apple.com.cn = server:h3://dns.alidns.com/dns-query
 *.run.claw.cloud = server:h3://dns.alidns.com/dns-query
 *translate-solo.ddns-ip.net = server:h3://dns.alidns.com/dns-query
 # 腾讯
