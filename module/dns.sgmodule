@@ -12,6 +12,7 @@ hotspot.cslwifi.com = server:syslib
 amplifi.lan = server:syslib
 *.lan = server:syslib
 # 国外
+bag.itunes.apple.com = bag.itunes.apple.com.w.alikunlun.com
 aod.itunes.apple.com = aod.itunes.apple.com.w.alikunlun.com
 *iosapps.itunes.apple.com = iosapps.itunes.apple.com.m.alikunlun.net
 *osxapps.itunes.apple.com = osxapps.itunes.apple.com.w.alikunlun.com
